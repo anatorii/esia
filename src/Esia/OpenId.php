@@ -200,8 +200,8 @@ class OpenId
         $this->logger->debug('Payload: ', $payload);
 
         $token = $payload['access_token'];
-        $refreshToken = $payload['refresh_token'];
-        $expiresIn = $payload['expires_in'];
+        $refreshToken = $payload['refresh_token'] ?? '';
+        $expiresIn = $payload['expires_in'] ?? '';
 
         $this->config->setToken($token);
         $this->config->setRefreshToken($refreshToken);
