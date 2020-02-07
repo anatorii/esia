@@ -155,12 +155,37 @@ class OpenIdTest extends Unit
     }
 
     /**
+     * @throws \Esia\Exceptions\InvalidConfigurationException
+     */
+    public function testBuildLogoutUrl(): void
+    {
+        $config = $this->openId->getConfig();
+
+        $url = $config->getLogoutUrl() . '?client_id=' . $config->getClientId();
+        $logoutUrl = $this->openId->buildLogoutUrl();
+        $this->assertSame($url, $logoutUrl);
+    }
+
+    /**
+     * @throws \Esia\Exceptions\InvalidConfigurationException
+     */
+    public function testBuildLogoutUrlWithRedirect(): void
+    {
+        $config = $this->openId->getConfig();
+        
+        $redirectUrl = 'test.example.com';
+        $url = $config->getLogoutUrl() . '?client_id=' . $config->getClientId() . '&redirect_url=' . $redirectUrl;
+        $logoutUrl = $this->openId->buildLogoutUrl($redirectUrl);
+        $this->assertSame($url, $logoutUrl);
+    }
+
+    /**
      * Client with prepared responses
      *
      * @param array $responses
      * @return ClientInterface
      */
-    private function buildClientWithResponses(array $responses): ClientInterface
+    protected function buildClientWithResponses(array $responses): ClientInterface
     {
         $mock = new MockHandler($responses);
 
