@@ -21,6 +21,7 @@ class OpenIdCliOpensslTest extends OpenIdTest {
             'privateKeyPassword' => 'test',
             'certPath' => codecept_data_dir('server-gost.crt'),
             'tmpPath' => codecept_log_dir(),
+            'useCli'  => true
         ];
 
         $config = new Config($this->config);
@@ -55,6 +56,29 @@ class OpenIdCliOpensslTest extends OpenIdTest {
             $this->config['privateKeyPath'],
             $this->config['privateKeyPassword'],
             $this->config['tmpPath']
+        ));
+        $token = $openId->getToken('test');
+        $this->assertNotEmpty($token);
+        $this->assertSame($oid, $openId->getConfig()->getOid());
+    }
+
+    public function testGetTokenWithGost() {
+        $this->config['useGost'] = true;
+        $config = new Config($this->config);
+
+        $oid = '123';
+        $oidBase64 = base64_encode('{ "urn:esia:sbj_id" : ' . $oid . '}');
+
+        $client = $this->buildClientWithResponses([
+            new Response(200, [], '{ "access_token": "test.' . $oidBase64 . '.test"}'),
+        ]);
+        $openId = new OpenId($config, $client);
+        $openId->setSigner(new CliSignerPKCS7(
+            $this->config['certPath'],
+            $this->config['privateKeyPath'],
+            $this->config['privateKeyPassword'],
+            $this->config['tmpPath'],
+            $this->config['useGost']
         ));
         $token = $openId->getToken('test');
         $this->assertNotEmpty($token);
