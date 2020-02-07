@@ -7,7 +7,7 @@ use Esia\OpenId;
 use Esia\Signer\CliSignerPKCS7;
 use GuzzleHttp\Psr7\Response;
 
-class OpenIdCliOpensslTest extends OpenIdTest {
+class OpenIdCliGostOpensslTest extends OpenIdTest {
     /**
      * @throws \Esia\Exceptions\InvalidConfigurationException
      */
@@ -17,10 +17,12 @@ class OpenIdCliOpensslTest extends OpenIdTest {
             'clientId' => 'INSP03211',
             'redirectUrl' => 'http://my-site.com/response.php',
             'portalUrl' => 'https://esia-portal1.test.gosuslugi.ru/',
-            'privateKeyPath' => codecept_data_dir('server.key'),
+            'privateKeyPath' => codecept_data_dir('server-gost.key'),
             'privateKeyPassword' => 'test',
-            'certPath' => codecept_data_dir('server.crt'),
+            'certPath' => codecept_data_dir('server-gost.crt'),
             'tmpPath' => codecept_log_dir(),
+            'useCli'  => true,
+            'useGost' => true
         ];
 
         $config = new Config($this->config);
@@ -30,17 +32,12 @@ class OpenIdCliOpensslTest extends OpenIdTest {
             $this->config['certPath'],
             $this->config['privateKeyPath'],
             $this->config['privateKeyPassword'],
-            $this->config['tmpPath']
+            $this->config['tmpPath'],
+            $this->config['useGost']
         ));
     }
-    
-    /**
-     * @throws SignFailException
-     * @throws \Esia\Exceptions\AbstractEsiaException
-     * @throws \Esia\Exceptions\InvalidConfigurationException
-     */
-    public function testGetToken(): void
-    {
+
+    public function testGetTokenWithGost() {
         $config = new Config($this->config);
 
         $oid = '123';
@@ -54,7 +51,8 @@ class OpenIdCliOpensslTest extends OpenIdTest {
             $this->config['certPath'],
             $this->config['privateKeyPath'],
             $this->config['privateKeyPassword'],
-            $this->config['tmpPath']
+            $this->config['tmpPath'],
+            $this->config['useGost']
         ));
         $token = $openId->getToken('test');
         $this->assertNotEmpty($token);
