@@ -17,9 +17,9 @@ class OpenIdCliOpensslTest extends OpenIdTest {
             'clientId' => 'INSP03211',
             'redirectUrl' => 'http://my-site.com/response.php',
             'portalUrl' => 'https://esia-portal1.test.gosuslugi.ru/',
-            'privateKeyPath' => codecept_data_dir('server-gost.key'),
+            'privateKeyPath' => codecept_data_dir('server.key'),
             'privateKeyPassword' => 'test',
-            'certPath' => codecept_data_dir('server-gost.crt'),
+            'certPath' => codecept_data_dir('server.crt'),
             'tmpPath' => codecept_log_dir(),
             'useCli'  => true
         ];
@@ -64,6 +64,10 @@ class OpenIdCliOpensslTest extends OpenIdTest {
 
     public function testGetTokenWithGost() {
         $this->config['useGost'] = true;
+        $this->config['certPath'] = codecept_data_dir('server-gost.crt');
+        $this->config['privateKeyPath'] = codecept_data_dir('server-gost.key');
+        $this->config['privateKeyPassword'] = 'test';
+
         $config = new Config($this->config);
 
         $oid = '123';
