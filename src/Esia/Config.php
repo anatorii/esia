@@ -12,7 +12,6 @@ class Config
     private $certPath;
 
     private $useCli;
-    private $useGost;
 
     private $portalUrl = 'http://esia-portal1.test.gosuslugi.ru/';
     private $tokenUrlPath = 'aas/oauth2/te';
@@ -74,7 +73,6 @@ class Config
         }
 
         $this->useCli = $config['useCli'] ?? false;
-        $this->useGost = $config['useGost'] ?? false;
 
         $this->portalUrl = $config['portalUrl'] ?? $this->portalUrl;
         $this->tokenUrlPath = $config['tokenUrlPath'] ?? $this->tokenUrlPath;
@@ -233,14 +231,5 @@ class Config
      */
     public function getUseCli(): bool {
         return $this->useCli;
-    }
-
-    /**
-     * Return a param telling us whether we should use gost engine for OpenSSL. Requires OpenSSL to be configured with
-     * gost algorithms enabled.
-     * @return bool
-     */
-    public function getUseGost(): bool {
-        return $this->useGost;
     }
 }

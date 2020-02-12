@@ -9,14 +9,6 @@ class CliSignerPKCS7 extends AbstractSignerPKCS7 implements SignerInterface
 {
     use LoggerAwareTrait;
 
-    protected $useGost;
-
-    function __construct(string $certPath, string $privateKeyPath, ?string $privateKeyPassword, string $tmpPath, bool $useGost = false)
-    {
-        parent::__construct($certPath, $privateKeyPath, $privateKeyPassword, $tmpPath);
-        $this->useGost = $useGost;
-    }
-
     /**
      * @param string $message
      * @return string
@@ -34,7 +26,6 @@ class CliSignerPKCS7 extends AbstractSignerPKCS7 implements SignerInterface
 
         $this->run(
             'openssl smime -sign -binary -outform DER -noattr ' .
-            ($this->useGost ? '-engine gost ' : '').
             '-signer ' . escapeshellarg($this->certPath) . ' ' .
             '-inkey ' . escapeshellarg($this->privateKeyPath) . ' ' .
             '-passin ' . escapeshellarg('pass:' . $this->privateKeyPassword) . ' ' .

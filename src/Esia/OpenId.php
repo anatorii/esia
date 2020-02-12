@@ -59,8 +59,7 @@ class OpenId
                 $config->getCertPath(),
                 $config->getPrivateKeyPath(),
                 $config->getPrivateKeyPassword(),
-                $config->getTmpPath(),
-                $config->getUseGost()
+                $config->getTmpPath()
             );
         } else {
             $this->signer = new SignerPKCS7(
