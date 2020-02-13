@@ -68,7 +68,6 @@ class OpenId
                 $config->getPrivateKeyPassword(),
                 $config->getTmpPath()
             );
-
         }
     }
 
